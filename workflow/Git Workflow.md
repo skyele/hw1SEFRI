@@ -20,7 +20,7 @@ When evaluating a workflow for your team, it's most important that you consider 
 * Does this workflow impose any new unnecessary cognitive overhead to the team?
 
 ##Centralized Workflow
-![](/pics/2.png)
+![](pics/2.png)
 
 The Centralized Workflow is a great Git workflow for teams transitioning from SVN. Like Subversion, the Centralized Workflow uses a central repository to serve as the single point-of-entry for all changes to the project. Instead of trunk, the default development branch is called master and all changes are committed into this branch. This workflow doesn’t require any other branches besides master.
 
@@ -39,7 +39,7 @@ To publish changes to the official project, developers "push" their local master
 
 ##Initialize the central repository
 
-![](/pics/3.png)
+![](pics/3.png)
 
 First, someone needs to create the central repository on a server. If it’s a new project, you can initialize an empty repository. Otherwise, you’ll need to import an existing Git or SVN repository.
 
@@ -64,7 +64,7 @@ When you clone a repository, Git automatically adds a shortcut called origin tha
 ##Make changes and commit
 
 Once the repository is cloned locally, a developer can make changes using the standard Git commit process: edit, stage, and commit. If you’re not familiar with the staging area, it’s a way to prepare a commit without having to include every change in the working directory. This lets you create highly focused commits, even if you’ve made a lot of local changes.
-![](/pics/4.png)
+![](pics/4.png)
 
 Remember that since these commands create local commits, John can repeat this process as many times as he wants without worrying about what’s going on in the central repository. This can be very useful for large features that need to be broken down into simpler, more atomic chunks.
 
@@ -72,7 +72,7 @@ Remember that since these commands create local commits, John can repeat this pr
 
 Once the local repository has new changes committed. These change will need to be pushed to share with other developers on the project.
 
-![](/pics/10.png)
+![](pics/10.png)
 
 This command will push the new committed changes to the central repository. When pushing changes to the central repository, it is possible that updates from another developer have been previously pushed that contain code which conflict with the intended push updates. Git will output a message indicating this conflict. In this situation, git pull will first need to be executed. This conflict scenario will be expanded on in the following section.
 
@@ -81,7 +81,7 @@ This command will push the new committed changes to the central repository. When
 
 The central repository represents the official project, so its commit history should be treated as sacred and immutable. If a developer’s local commits diverge from the central repository, Git will refuse to push their changes because this would overwrite official commits.
 
-![](/pics/6.png)
+![](pics/6.png)
 
 Before the developer can publish their feature, they need to fetch the updated central commits and rebase their changes on top of them. This is like saying, “I want to add my changes to what everyone else has already done.” The result is a perfectly linear history, just like in traditional SVN workflows.
 
@@ -92,7 +92,7 @@ Let’s take a general example at how a typical small team would collaborate usi
 
 ###John works on his feature
 
-![](/pics/7.png)
+![](pics/7.png)
 
 In his local repository, John can develop features using the standard Git commit process: edit, stage, and commit.
 
@@ -100,73 +100,73 @@ Remember that since these commands create local commits, John can repeat this pr
 
 ###Mary works on her feature
 
-![](/pics/8.png)
+![](pics/8.png)
 
 Meanwhile, Mary is working on her own feature in her own local repository using the same edit/stage/commit process. Like John, she doesn’t care what’s going on in the central repository, and she really doesn’t care what John is doing in his local repository, since all local repositories are private.
 
 ###John publishes his feature
 
-![](/pics/9.png)
+![](pics/9.png)
 
 Once John finishes his feature, he should publish his local commits to the central repository so other team members can access it. He can do this with the git push command, like so:
 
-![](/pics/10.png)
+![](pics/10.png)
 
 Remember that origin is the remote connection to the central repository that Git created when John cloned it. The master argument tells Git to try to make the origin’s master branch look like his local master branch. Since the central repository hasn’t been updated since John cloned it, this won’t result in any conflicts and the push will work as expected.
 
 ###Mary tries to publish her feature
 
-![](/pics/11.png)
+![](pics/11.png)
 
 Let’s see what happens if Mary tries to push her feature after John has successfully published his changes to the central repository. She can use the exact same push command:
 
-![](/pics/10.png)
+![](pics/10.png)
 
 But, since her local history has diverged from the central repository, Git will refuse the request with a rather verbose error message:
 
-![](/pics/12.png)
+![](pics/12.png)
 
 This prevents Mary from overwriting official commits. She needs to pull John’s updates into her repository, integrate them with her local changes, and then try again.
 
 ###Mary rebases on top of John’s commit(s)
 
-![](/pics/13.png)
+![](pics/13.png)
 
 Mary can use git pull to incorporate upstream changes into her repository. This command is sort of like svn update—it pulls the entire upstream commit history into Mary’s local repository and tries to integrate it with her local commits:
 
-![](/pics/14.png)
+![](pics/14.png)
 
 The --rebase option tells Git to move all of Mary’s commits to the tip of the master branch after synchronising it with the changes from the central repository, as shown below:
 
-![](/pics/15.png)
+![](pics/15.png)
 
 The pull would still work if you forgot this option, but you would wind up with a superfluous “merge commit” every time someone needed to synchronize with the central repository. For this workflow, it’s always better to rebase instead of generating a merge commit.
 
 ###Mary resolves a merge conflict
 
-![](/pics/16.png)
+![](pics/16.png)
 
 Rebasing works by transferring each local commit to the updated master branch one at a time. This means that you catch merge conflicts on a commit-by-commit basis rather than resolving all of them in one massive merge commit. This keeps your commits as focused as possible and makes for a clean project history. In turn, this makes it much easier to figure out where bugs were introduced and, if necessary, to roll back changes with minimal impact on the project.
 
 If Mary and John are working on unrelated features, it’s unlikely that the rebasing process will generate conflicts. But if it does, Git will pause the rebase at the current commit and output the following message, along with some relevant instructions:
 
-![](/pics/17.png)
+![](pics/17.png)
 
 The great thing about Git is that anyone can resolve their own merge conflicts. In our example, Mary would simply run a [git status](https://www.atlassian.com/git/tutorials/inspecting-a-repository) to see where the problem is. Conflicted files will appear in the Unmerged paths section:
 
-![](/pics/18.png)
+![](pics/18.png)
 
 Then, she’ll edit the file(s) to her liking. Once she’s happy with the result, she can stage the file(s) in the usual fashion and let [git rebase](https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase) do the rest:
 
-![](/pics/19.png)
+![](pics/19.png)
 
 ###Mary successfully publishes her feature
 
-![](/pics/20.png)
+![](pics/20.png)
 
 After she’s done synchronizing with the central repository, Mary will be able to publish her changes successfully:
 
-![](/pics/21.png)
+![](pics/21.png)
 
 ##Where to go from here
 
