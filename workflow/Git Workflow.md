@@ -1,4 +1,4 @@
-![](/pics/1.jpg)
+![](pics/1.jpg)
 #Git Workflow
 
 ##Comparing Workflows
